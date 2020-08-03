@@ -1,0 +1,16 @@
+PODS:
+  - ANetwork (0.1.0)
+
+DEPENDENCIES:
+  - ANetwork (from `../`)
+
+EXTERNAL SOURCES:
+  ANetwork:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  ANetwork: 3906cb038348137e7f57f08ba75d50181f9bb453
+
+PODFILE CHECKSUM: a5ac29dbaa034b3936de65a4ec26f196a136496a
+
+COCOAPODS: 1.9.3
