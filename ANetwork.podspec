@@ -24,9 +24,9 @@ TODO: Add long description of the pod here.
   s.homepage         = 'https://github.com/allanmendez10/ANetwork'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'allanmendez10' => 'acordero@tecnosys.net' }
+  s.author           = { 'allanmendez10' => 'allanmendez0120@gmail.com' }
   s.source           = { :git => 'https://github.com/allanmendez10/ANetwork.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.social_media_url = 'https://www.linkedin.com/in/allan-m%C3%A9ndez-0a922a1b2/'
 
   s.ios.deployment_target = '8.0'
 
