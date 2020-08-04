@@ -26,11 +26,15 @@ TODO: Add long description of the pod here.
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'allanmendez10' => 'allanmendez0120@gmail.com' }
   s.source           = { :git => 'https://github.com/allanmendez10/ANetwork.git', :tag => s.version.to_s }
-  s.social_media_url = 'https://www.linkedin.com/in/allan-m%C3%A9ndez-0a922a1b2/'
+  s.social_media_url = 'https://www.instagram.com/allan_cmdz?r=nametag'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '12.0'
 
-  s.source_files = 'ANetwork/Classes/**/*'
+  s.source_files = 'Source/**/*.swift'
+  s.swift_version = '5.0'
+  s.platforms = {
+      "ios":"12.0"
+  }
   
   # s.resource_bundles = {
   #   'ANetwork' => ['ANetwork/Assets/*.png']
