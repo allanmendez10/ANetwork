@@ -22,7 +22,7 @@ pod 'ANetwork'
 
 ## Author
 
-allanmendez10, acordero@tecnosys.net
+allanmendez10, allamendez0120@gmail.com
 
 ## License
 
