@@ -21,7 +21,7 @@ public class Repository: NSObject{
     }
     
     
-    public func executeRequest<D:Decodable,E:Encodable>(path:String,method:HttpCode,object:E?,onSuccess : @escaping (D) -> (),onError : @escaping (Error?) -> ()){
+    public func executeMethodWithRequestObject<D:Decodable,E:Encodable>(path:String,method:HttpCode,object:E,onSuccess : @escaping (D) -> (),onError : @escaping (Error?) -> ()){
         
         let request = service?.execute(path: path, httpMethod: method,httpRequestParams:try? self.jsonEncoder!.encode(object))
         
@@ -45,9 +45,9 @@ public class Repository: NSObject{
     }
     
     
-    public func executeGetMethod<D:Decodable>(path:String,method:HttpCode,onSuccess : @escaping (D) -> (),onError : @escaping (Error?) -> ()){
+    public func executeMethodWithoutRequestObject<D:Decodable>(path:String,method:HttpCode,onSuccess : @escaping (D) -> (),onError : @escaping (Error?) -> ()){
         
-      let request = service?.execute(path: path, httpMethod: method,httpRequestParams: nil)
+        let request = service?.execute(path: path, httpMethod: method)
         
         self.session?.dataTask(with: request!) { (data, urlResponse, error) in
             

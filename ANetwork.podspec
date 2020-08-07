@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ANetwork'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of ANetwork.'
+  s.version          = '0.2.0'
+  s.summary          = 'ANetwork is an HTTP networking library written in Swift.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?

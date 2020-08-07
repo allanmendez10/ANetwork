@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     
     func getPosts(){
         
-        self.repo!.executeGetMethod(path: "posts", method: HttpCode.get,
+        self.repo!.executeMethodWithoutRequestObject(path: "posts",method: HttpCode.get,
                                     onSuccess: {
                                         (posts:[Post]) in
                                         
@@ -44,33 +44,33 @@ class ViewController: UIViewController {
     }
     
     func getPost(){
-         
-         self.repo!.executeGetMethod(path: "posts/1", method: HttpCode.get,
-                                     onSuccess: {
-                                         (post:Post) in
+        
+        self.repo!.executeMethodWithoutRequestObject(path: "posts/1",method: HttpCode.get,
+                                    onSuccess: {
+                                        (post:Post) in
                                         DispatchQueue.main.async {
                                             // UI Update code here
-                                        
-                                        self.lblUserID.text = String(post.userId)
-                                        
-                                        self.lblId.text = String(post.id)
-                                        
-                                        self.lblBody.text = post.body
-                                        
-                                        self.lblTitle.text = post.title
-                                        
+                                            
+                                            self.lblUserID.text = String(post.userId)
+                                            
+                                            self.lblId.text = String(post.id)
+                                            
+                                            self.lblBody.text = post.body
+                                            
+                                            self.lblTitle.text = post.title
+                                            
                                         }
-                                       
-                                         
-         }, onError: {
-             error in
+                                        
+                                        
+        }, onError: {
+            error in
             self.lblError.isHidden = false
-         })
-     }
+        })
+    }
     
     func insertPost(){
         let newPost = Post(userId: 1,title: "ANetwork",body: "Body ANetwork")
-        self.repo!.executeRequest(path: "posts", method: HttpCode.post,object:newPost,
+        self.repo!.executeMethodWithRequestObject(path: "posts", method: HttpCode.post,object:newPost,
                                   onSuccess: {
                                     (post:Post) in
                                     print("Title: \(post.title)")
