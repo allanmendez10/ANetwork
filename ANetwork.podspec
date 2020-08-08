@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ANetwork'
-  s.version          = '0.2.0'
+  s.version          = '1.2'
   s.summary          = 'ANetwork is an HTTP networking library written in Swift.'
 
 # This description is used to generate tags and improve search results.
