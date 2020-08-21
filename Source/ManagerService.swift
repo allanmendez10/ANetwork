@@ -12,7 +12,7 @@ class ManagerService: NSObject {
     
     private var sourcesURL:String?
     static var instance: ManagerService?
-    
+    private let jsonEncoder:JSONEncoder?
     
     static func getInstance(url:String)->ManagerService?{
         
@@ -28,16 +28,18 @@ class ManagerService: NSObject {
     
     init(url:String) {
         self.sourcesURL =  url
+        self.jsonEncoder = JSONEncoder()
         
     }
     
-    func execute(path:String, httpMethod:HttpCode, httpRequestParams:Data? = nil, postdatadictionary: [AnyHashable: Any]? = nil)->URLRequest! {
+    func execute<E:Encodable>(path:String, httpMethod:HttpCode, object:E, isMultipart: Bool = false)->URLRequest! {
         var request = URLRequest(url: URL(string: self.sourcesURL! + path)!)
         request.httpMethod = httpMethod.description
-
         
-        if let data = postdatadictionary{
-           request =  postMultiPartdata(postdatadictionary: data, request: request)
+        let httpRequestParams = try? self.jsonEncoder!.encode(object)
+        
+        if isMultipart {
+            request =  postMultiPartdata(mirror: Mirror(reflecting: object), request: request)
         }
         else if let data = httpRequestParams{
             request.setValue("application/json", forHTTPHeaderField: "Accept")
@@ -48,7 +50,13 @@ class ManagerService: NSObject {
         return request
     }
     
-    func postMultiPartdata( postdatadictionary: [AnyHashable: Any], request : URLRequest!) -> URLRequest!{
+    func execute(path:String, httpMethod:HttpCode, isMultipart: Bool = false)->URLRequest! {
+        var request = URLRequest(url: URL(string: self.sourcesURL! + path)!)
+        request.httpMethod = httpMethod.description
+        return request
+    }
+    
+    func postMultiPartdata(mirror: Mirror, request : URLRequest!) -> URLRequest!{
         
         var urlRequest = request
         let body = NSMutableData();
@@ -56,17 +64,17 @@ class ManagerService: NSObject {
         let contentType = "multipart/form-data; boundary=\(boundary)"
         urlRequest!.addValue(contentType, forHTTPHeaderField: "Content-Type")
         
-        for (key, value) in postdatadictionary {
+        for case let (label?, value) in mirror.children {
             
-            if(value is UIImage)
-            {
-                let  TimeStamp = "\(Date().timeIntervalSince1970 * 1000)"
+            if value is Data {
+                
+                let  TimeStamp = "\(Date().timeIntervalSince1970 * 1000).png"
                 
                 body.append("--\(boundary)\r\n".data(using: .utf8)!)
-                body.append("Content-Disposition: form-data; name=\"\(key)\"; filename=\"\(TimeStamp)\"\r\n".data(using:.utf8)!)
-                body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-                body.append((value as! UIImage).pngData()!)
+                body.append("Content-Disposition: form-data; name=\"\(label)\"; filename=\"\(TimeStamp)\"\r\n".data(using:.utf8)!)
+                body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
                 body.append(value as! Data)
+                body.append("\r\n".data(using: .utf8)!)
                 
             }
             else
@@ -74,26 +82,30 @@ class ManagerService: NSObject {
                 if let anEncoding = "--\(boundary)\r\n".data(using: .utf8) {
                     body.append(anEncoding)
                 }
-                if let anEncoding = "Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8) {
+                if let anEncoding = "Content-Disposition: form-data; name=\"\(label)\"\r\n\r\n".data(using: .utf8) {
                     body.append(anEncoding)
                 }
-                if let aKey = postdatadictionary[key], let anEncoding = "\(aKey)".data(using: .utf8) {
-                    body.append(anEncoding)
-                }
+                
+                body.append("\(value)".data(using: .utf8)!)
+                
                 if let anEncoding = "\r\n".data(using: .utf8) {
                     body.append(anEncoding)
                 }
             }
         }
         
-        if let anEncoding = "--\(boundary)--\r\n".data(using: .utf8) {
+        if let anEncoding = "--\(boundary)--".data(using: .utf8) {
             body.append(anEncoding)
         }
-        // setting the body of the post to the reqeust
+  
         urlRequest!.httpBody = body as Data
-
+        
         return urlRequest
         
     }
     
+    
+    
 }
+
+

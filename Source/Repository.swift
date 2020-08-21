@@ -12,18 +12,17 @@ public class Repository: NSObject{
     
     private var session:URLSession?
     private var service:ManagerService?
-    private let jsonEncoder:JSONEncoder?
     
     public init(url:String) {
         self.service = ManagerService.getInstance(url: url)
         self.session = URLSession.shared
-        self.jsonEncoder = JSONEncoder()
     }
     
     
-    public func executeMethodWithRequestObject<D:Decodable,E:Encodable>(path:String,method:HttpCode,object:E,onSuccess : @escaping (D) -> (),onError : @escaping (Error?) -> ()){
+    public func executeMethodWithRequestObject<D:Decodable,E:Encodable>(path:String,method:HttpCode,object:E,onSuccess : @escaping (D) -> (),onError : @escaping (Error?) -> (), isMultipart : Bool = false){
         
-        let request = service?.execute(path: path, httpMethod: method,httpRequestParams:try? self.jsonEncoder!.encode(object))
+        
+        let request = service?.execute(path: path, httpMethod: method, object: object,isMultipart: isMultipart)
         
         self.session?.dataTask(with: request!) { (data, urlResponse, error) in
             
@@ -67,8 +66,6 @@ public class Repository: NSObject{
         }.resume()
         
     }
-    
-    
     
     
 }
